@@ -1,0 +1,39 @@
+Bootstrap: docker
+From: ubuntu:20.04
+
+%labels
+    Author Biraj Shrestha
+    Version v2.1.0
+    Description "Singularity container with Connectome Workbench v2.1.0 + neuromaps"
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update && apt-get install -y \
+    wget unzip python3 python3-pip python3-setuptools \
+    python3-wheel git curl build-essential \
+    libgl1-mesa-glx libglu1-mesa libxext6 libxrender1 libxtst6 \
+    libglib2.0-0 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+    # Install Connectome Workbench v2.1.0 (direct link)
+    mkdir -p /opt && cd /opt
+    wget -q https://www.humanconnectome.org/storage/app/media/workbench/workbench-linux64-v2.1.0.zip
+    unzip workbench-linux64-v2.1.0.zip
+    mv workbench workbench-v2.1.0
+    rm workbench-linux64-v2.1.0.zip
+
+    # Install neuromaps
+    cd /opt
+    git clone https://github.com/netneurolab/neuromaps.git
+    cd neuromaps && python3 -m pip install .
+
+    mkdir -p /app/data /app/scripts
+
+%environment
+    export PATH=/opt/workbench-v2.1.0/bin_linux64:$PATH
+    export PATH=/opt/neuromaps:$PATH
+    export PYTHONPATH=/opt/neuromaps:$PYTHONPATH
+
+%runscript
+    echo "Connectome Workbench v2.1.0 + neuromaps container"
+    exec /bin/bash "$@"
