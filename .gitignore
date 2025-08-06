@@ -1,1 +1,4 @@
-neuromaps-workbench.sif
+*.sif
+venv
+__pycache__
+.local

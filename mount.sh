@@ -6,9 +6,9 @@
 #SBATCH --ntasks-per-node=8
 
 
-IMAGE="/ocean/projects/med250004p/bshresth/projects/tfunck/neuromaps-dev-env/neuromaps-workbench.sif"
+IMAGE="/home/bshrestha/projects/Tfunck/neuromaps-dev-env/neuromaps.sif"
 
-dir=/ocean/projects/med250004p/bshresth/projects
+dir=/home/bshrestha/projects
 
 
 apptainer exec \
